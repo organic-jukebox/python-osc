@@ -62,6 +62,14 @@ def _call_handlers_for_packet(request_handler):
         packet = osc_packet.OscPacket(data)
         for timed_msg in packet.messages:
             now = time.time()
+
+            raw_handlers = dispatcher.raw_handlers_for_address(timed_msg.message.address)
+            for handler in raw_handlers:
+                if handler.args:
+                    handler.callback(timed_msg.time, request_handler, timed_msg.message.address, handler.args, *timed_msg.message)
+                else:
+                    handler.callback(timed_msg.time, request_handler, timed_msg.message.address, *timed_msg.message)
+
             handlers = dispatcher.handlers_for_address(timed_msg.message.address)
             if not handlers:
                 continue
