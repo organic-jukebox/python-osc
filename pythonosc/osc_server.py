@@ -75,7 +75,8 @@ def _call_handlers_for_packet(request_handler):
                 continue
             # If the message is to be handled later, then so be it.
             if timed_msg.time > now:
-                time.sleep(timed_msg.time - now)
+                # time.sleep(timed_msg.time - now)
+                pass
             for handler in handlers:
                 if handler.args:
                     handler.callback(request_handler, timed_msg.message.address, handler.args, *timed_msg.message)
